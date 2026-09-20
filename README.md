@@ -6,8 +6,8 @@ dirancang untuk pemeriksaan berbasis foto, pencatatan historis 12 pohon Rambutan
 Belereng, analisis AI lokal, rule-based reasoning, explainable AI, serta
 pengembangan model di masa depan.
 
-> **© 2026 · MILIK PEMILIK SAH · AI - ANALIS RAMBUTAN**  
-> Hak cipta dan seluruh data aplikasi adalah milik pemilik sah aplikasi.
+> **© 2026 · MILIK MUAMMAR, SST, M.KOM · AI - ANALIS RAMBUTAN**
+> Hak cipta dan seluruh data aplikasi adalah milik Muammar, SST, M.Kom.
 
 ## Repository dan struktur
 

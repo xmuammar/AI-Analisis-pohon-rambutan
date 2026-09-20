@@ -52,7 +52,7 @@ def test_seeded_twelve_trees(client, app):
 def test_ownership_watermark_is_present_on_shared_layout(client):
     response = client.get("/trees")
     assert response.status_code == 200
-    assert b"MILIK PEMILIK SAH" in response.data
+    assert b"MILIK MUAMMAR, SST, M.KOM" in response.data
     assert b"copyright" in response.data
 
 
