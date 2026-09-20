@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{{ tree.code }} · AI - Analis Rambutan{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('trees.list_trees') }}">← Pohon Saya</a><div class="page-heading"><div><p class="eyebrow">{{ tree.variety|upper }}</p><h1>{{ tree.code }}</h1><p class="muted">{{ tree.garden.name }}</p></div><span class="status {{ tree.status|lower }}">{{ tree.status|replace('_', ' ')|title }}</span></div>
+<section class="card"><h2>Ringkasan</h2><div class="detail-row"><span>Spesies</span><strong>{{ tree.species }}</strong></div><div class="detail-row"><span>Pemeriksaan</span><strong>{{ tree.observations|length }}</strong></div><div class="detail-row"><span>AI visual</span><strong>Local inference tersedia</strong></div><a class="button primary" href="{{ url_for('trees.inspection', tree_id=tree.id) }}">Mulai Pemeriksaan</a></section>
+{% if tree.observations %}<section class="card"><h2>Riwayat terbaru</h2>{% for observation in tree.observations|reverse %}<div class="timeline"><strong>{{ observation.observation_datetime.strftime('%d %b %Y %H:%M') }}</strong><span>{{ observation.inspection_mode }} · {{ observation.general_condition|replace('_',' ')|title }}</span></div>{% endfor %}</section>{% endif %}
+{% endblock %}

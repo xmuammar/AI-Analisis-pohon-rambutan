@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Developer Center · AI - Analis Rambutan{% endblock %}
+{% block content %}
+<p class="eyebrow">MODE PENGEMBANG</p><h1>Developer Center</h1><p class="muted">Informasi teknis untuk audit dan pengembangan. Foto diproses oleh model lokal yang tersedia; hasil umum tidak dianggap sebagai diagnosis agronomi.</p>
+<div class="grid two"><section class="card"><h2>Database Manager</h2><p>Schema version <strong>{{ schema_version }}</strong> · SQLAlchemy · SQLite development / PostgreSQL-ready.</p><ul>{% for table in tables %}<li>{{ table }}</li>{% endfor %}</ul></section><section class="card"><h2>AI & XAI</h2><p>Rule engine, virtual soil sensor, feature engineering, ensemble, confidence, image quality, backup checksum, dan penjelasan berbasis bukti aktif.</p><p class="warning">Model visual: {{ snapshot.model.status }}</p><p>Prediksi menyimpan source, confidence, feature/model version, dan evidence agar dapat diaudit.</p><pre>{{ snapshot|tojson(indent=2) }}</pre></section></div>
+{% endblock %}
