@@ -71,6 +71,24 @@ Model pack lokal yang tersedia:
 Semua model disimpan di `instance/models` dan memiliki manifest SHA-256 di
 `model_manifests`. Model-model umum tersebut tidak boleh dipresentasikan sebagai diagnosis
 hama, penyakit, atau ukuran agronomi rambutan tanpa dataset dan evaluasi pertanian khusus.
+
+## Lembar kerja analis kebun
+
+Antarmuka web menggunakan istilah kerja lapangan: register pohon, identitas
+petak, timeline tanaman, kondisi vegetatif, pertumbuhan, fase produktif,
+perlindungan tanaman, perawatan, dan hasil panen. Skema longitudinal mencatat
+posisi baris/kolom, jarak tanam, tanggal tanam, baseline ukuran, kondisi zona
+akar, pemadatan/drainase tanah, genangan, mulsa, ukuran tajuk, cabang primer,
+aktivitas bunga, kerontokan buah, bagian tanaman yang terdampak, penyebaran
+hama/penyakit, serta kepadatan dan metode pengendalian gulma.
+
+Field tambahan tersebut berada pada migration
+`a1b2c3d4e5f6_add_professional_agronomic_fields.py` dan dapat diterapkan tanpa
+menghapus database:
+
+```bash
+flask --app run.py db upgrade
+```
 Untuk database development yang dibuat dengan `AUTO_CREATE_SCHEMA=1`, sinkronkan marker
 migrasi satu kali tanpa menghapus data:
 

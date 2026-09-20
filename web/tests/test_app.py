@@ -241,7 +241,7 @@ def test_dashboard_renders_analyst_metrics_and_visualizations(client):
     response = client.get("/dashboard")
     assert response.status_code == 200
     assert b"Dashboard Analitik Kebun" in response.data
-    assert b"Frekuensi pemeriksaan 30 hari" in response.data
+    assert b"Putaran pemeriksaan 30 hari" in response.data
     assert b"Status seluruh pohon" in response.data
     assert b"Object detection" in response.data
 

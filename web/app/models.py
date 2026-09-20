@@ -44,6 +44,13 @@ class Tree(db.Model):
     garden_id = db.Column(db.Integer, db.ForeignKey("garden.id"), nullable=False)
     species = db.Column(db.String(80), nullable=False, default="Rambutan")
     variety = db.Column(db.String(80), nullable=False, default="Belereng")
+    planting_date = db.Column(db.Date)
+    row_number = db.Column(db.Integer)
+    column_number = db.Column(db.Integer)
+    spacing_cm = db.Column(db.Float)
+    initial_height_cm = db.Column(db.Float)
+    initial_stem_circumference_cm = db.Column(db.Float)
+    root_condition_initial = db.Column(db.String(80))
     status = db.Column(db.String(32), nullable=False, default="SEHAT")
     active = db.Column(db.Boolean, nullable=False, default=True)
     notes = db.Column(db.Text)
@@ -66,9 +73,12 @@ class ObservationSession(db.Model):
         db.DateTime(timezone=True), default=utcnow, nullable=False
     )
     observer = db.Column(db.String(120))
+    days_after_planting = db.Column(db.Integer)
     inspection_mode = db.Column(db.String(20), nullable=False, default="PHOTO_FIRST")
     observation_quality = db.Column(db.String(32), default="UNASSESSED")
     general_condition = db.Column(db.String(80))
+    priority = db.Column(db.String(32), default="NORMAL")
+    weather_summary = db.Column(db.String(120))
     notes = db.Column(db.Text)
     created_at = db.Column(db.DateTime(timezone=True), default=utcnow, nullable=False)
     tree = db.relationship("Tree", back_populates="observations")
@@ -96,6 +106,13 @@ class SoilObservation(db.Model):
     standing_water = db.Column(db.Boolean, default=False, nullable=False)
     leaf_wilt = db.Column(db.Boolean, default=False, nullable=False)
     surface_dark = db.Column(db.Boolean, default=False, nullable=False)
+    soil_surface_condition = db.Column(db.String(80))
+    soil_compaction = db.Column(db.String(40))
+    soil_drainage = db.Column(db.String(40))
+    standing_water_depth_cm = db.Column(db.Float)
+    visible_cracks = db.Column(db.Boolean, default=False, nullable=False)
+    mulch_present = db.Column(db.Boolean, default=False, nullable=False)
+    root_zone_confidence = db.Column(db.Float)
     observation = db.relationship("ObservationSession", back_populates="soil")
 
 
@@ -161,6 +178,10 @@ class GrowthMeasurement(TreeRecord):
     stem_diameter_cm = db.Column(db.Float)
     stem_circumference_cm = db.Column(db.Float)
     canopy_width_cm = db.Column(db.Float)
+    canopy_height_cm = db.Column(db.Float)
+    canopy_ns_cm = db.Column(db.Float)
+    canopy_ew_cm = db.Column(db.Float)
+    primary_branch_count = db.Column(db.Integer)
     measurement_method = db.Column(db.String(40), default="MANUAL")
     confidence = db.Column(db.Float)
 
@@ -218,6 +239,8 @@ class FloweringObservation(TreeRecord):
     stage = db.Column(db.String(40))
     cluster_count = db.Column(db.Integer)
     abundance = db.Column(db.String(40))
+    flower_drop_level = db.Column(db.String(40))
+    pollination_activity = db.Column(db.String(40))
 
 
 class FruitObservation(TreeRecord):
@@ -228,6 +251,10 @@ class FruitObservation(TreeRecord):
     count_estimate = db.Column(db.Integer)
     average_diameter_mm = db.Column(db.Float)
     damage_percent = db.Column(db.Float)
+    fruit_drop_count = db.Column(db.Integer)
+    fruit_drop_level = db.Column(db.String(40))
+    fruit_color = db.Column(db.String(40))
+    ripeness = db.Column(db.String(40))
 
 
 class PestObservation(TreeRecord):
@@ -236,6 +263,8 @@ class PestObservation(TreeRecord):
     category = db.Column(db.String(80))
     severity = db.Column(db.String(40))
     affected_percent = db.Column(db.Float)
+    affected_part = db.Column(db.String(80))
+    spread = db.Column(db.String(40))
 
 
 class DiseaseObservation(TreeRecord):
@@ -245,6 +274,8 @@ class DiseaseObservation(TreeRecord):
     symptom_type = db.Column(db.String(80))
     severity = db.Column(db.String(40))
     affected_percent = db.Column(db.Float)
+    affected_part = db.Column(db.String(80))
+    spread = db.Column(db.String(40))
 
 
 class WeedObservation(TreeRecord):
@@ -253,6 +284,8 @@ class WeedObservation(TreeRecord):
     coverage_percent = db.Column(db.Float)
     height_cm = db.Column(db.Float)
     removed = db.Column(db.Boolean, default=False, nullable=False)
+    density = db.Column(db.String(40))
+    removal_method = db.Column(db.String(80))
 
 
 class WeatherObservation(db.Model):
