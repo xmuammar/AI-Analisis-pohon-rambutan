@@ -110,8 +110,8 @@ class SoilObservation(db.Model):
     soil_compaction = db.Column(db.String(40))
     soil_drainage = db.Column(db.String(40))
     standing_water_depth_cm = db.Column(db.Float)
-    visible_cracks = db.Column(db.Boolean, default=False, nullable=False)
-    mulch_present = db.Column(db.Boolean, default=False, nullable=False)
+    visible_cracks = db.Column(db.Boolean, default=False)
+    mulch_present = db.Column(db.Boolean, default=False)
     root_zone_confidence = db.Column(db.Float)
     observation = db.relationship("ObservationSession", back_populates="soil")
 
