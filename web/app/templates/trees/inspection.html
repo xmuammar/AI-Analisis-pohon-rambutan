@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Pemeriksaan {{ tree.code }} · AI - Analis Rambutan{% endblock %}
 {% block content %}
+<div class="inspection-layout">
 <a class="back" href="{{ url_for('trees.detail', tree_id=tree.id) }}">← {{ tree.code }}</a>
 <p class="eyebrow">FORM DATABASE + PEMBELAJARAN MESIN</p>
 <h1>Pemeriksaan {{ tree.code }}</h1>
@@ -71,6 +72,7 @@
   </section>
   <div data-after-analysis hidden>{{ form.submit(class="button primary") }}</div>
 </form>
+</div>
 <script>
 const photoInput = document.querySelector("#photos");
 const form = document.querySelector("#inspection-form");

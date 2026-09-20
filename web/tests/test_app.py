@@ -56,6 +56,12 @@ def test_ownership_watermark_is_present_on_shared_layout(client):
     assert b"copyright" in response.data
 
 
+def test_inspection_uses_full_width_responsive_layout(client):
+    response = client.get("/trees/1/inspection")
+    assert response.status_code == 200
+    assert b'class="inspection-layout"' in response.data
+
+
 def test_about_page_lists_algorithm_groups(client):
     response = client.get("/about")
     assert response.status_code == 200
