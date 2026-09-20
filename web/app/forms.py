@@ -51,8 +51,17 @@ class InspectionForm(FlaskForm):
         ],
         validators=[Optional()],
     )
-    soil_surface_condition = StringField(
-        "Kondisi permukaan tanah", validators=[Optional(), Length(max=80)]
+    soil_surface_condition = SelectField(
+        "Kondisi permukaan tanah",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("DARK", "Gelap/lembap"),
+            ("DRY", "Kering/terang"),
+            ("MUDDY", "Berlumpur"),
+            ("CRUSTED", "Berkerak"),
+            ("MULCHED", "Tertutup mulsa"),
+        ],
+        validators=[Optional()],
     )
     soil_compaction = SelectField(
         "Pemadatan tanah",
@@ -128,8 +137,17 @@ class InspectionForm(FlaskForm):
         ],
         validators=[Optional()],
     )
-    fruit_color = StringField(
-        "Warna buah dominan", validators=[Optional(), Length(max=40)]
+    fruit_color = SelectField(
+        "Warna buah dominan",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("GREEN", "Hijau"),
+            ("YELLOW_GREEN", "Hijau kekuningan"),
+            ("RED", "Merah"),
+            ("DARK_RED", "Merah tua"),
+            ("BROWN", "Cokelat"),
+        ],
+        validators=[Optional()],
     )
     ripeness = SelectField(
         "Kematangan buah",
@@ -142,9 +160,29 @@ class InspectionForm(FlaskForm):
         validators=[Optional()],
     )
     pest_present = BooleanField("Hama terlihat")
-    pest_type = StringField("Kategori hama", validators=[Optional(), Length(max=80)])
-    pest_affected_part = StringField(
-        "Bagian tanaman terdampak hama", validators=[Optional(), Length(max=80)]
+    pest_type = SelectField(
+        "Kategori hama",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("INSECT", "Serangga"),
+            ("MITE", "Tungau"),
+            ("CATERPILLAR", "Ulat"),
+            ("SAP_SUCKER", "Pengisap cairan"),
+            ("UNKNOWN", "Belum teridentifikasi"),
+        ],
+        validators=[Optional()],
+    )
+    pest_affected_part = SelectField(
+        "Bagian tanaman terdampak hama",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("LEAF", "Daun"),
+            ("SHOOT", "Tunas"),
+            ("STEM", "Batang/cabang"),
+            ("FLOWER", "Bunga"),
+            ("FRUIT", "Buah"),
+        ],
+        validators=[Optional()],
     )
     pest_spread = SelectField(
         "Penyebaran hama",
@@ -157,11 +195,29 @@ class InspectionForm(FlaskForm):
         validators=[Optional()],
     )
     disease_present = BooleanField("Gejala penyakit terlihat")
-    disease_type = StringField(
-        "Kategori penyakit", validators=[Optional(), Length(max=80)]
+    disease_type = SelectField(
+        "Kategori penyakit",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("FUNGAL", "Gejala jamur"),
+            ("BACTERIAL", "Gejala bakteri"),
+            ("VIRAL_LIKE", "Gejala mirip virus"),
+            ("PHYSIOLOGICAL", "Gangguan fisiologis"),
+            ("UNKNOWN", "Belum teridentifikasi"),
+        ],
+        validators=[Optional()],
     )
-    disease_affected_part = StringField(
-        "Bagian tanaman terdampak penyakit", validators=[Optional(), Length(max=80)]
+    disease_affected_part = SelectField(
+        "Bagian tanaman terdampak penyakit",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("LEAF", "Daun"),
+            ("SHOOT", "Tunas"),
+            ("STEM", "Batang/cabang"),
+            ("FLOWER", "Bunga"),
+            ("FRUIT", "Buah"),
+        ],
+        validators=[Optional()],
     )
     disease_spread = SelectField(
         "Penyebaran penyakit",

@@ -249,6 +249,11 @@ function renderFields(fields) {
         if (target.type === "checkbox") target.checked = Boolean(field.value);
         else target.value = field.value;
         target.dataset.aiFilled = "true";
+        if (field.status !== "NEEDS_CONFIRMATION" && field.status !== "UNKNOWN") {
+          target.disabled = true;
+          target.dataset.aiLocked = "true";
+          target.setAttribute("aria-disabled", "true");
+        }
       }
       target.dataset.aiStatus = field.status || "UNKNOWN";
       const container = target.closest("label") || target.parentElement;
@@ -260,7 +265,7 @@ function renderFields(fields) {
         const automatic = field.value !== null && field.value !== undefined &&
           field.status !== "NEEDS_CONFIRMATION" && field.status !== "UNKNOWN";
         note.textContent = automatic
-          ? `AI terisi · ${statusLabels[field.status] || field.status}`
+          ? `Diisi AI · ${statusLabels[field.status] || field.status} · tidak perlu input manual`
           : ["HYBRID_AGRICULTURE_SCREENING", "HYBRID_FLOWER_FRUIT_SCREENING", "SOIL_LEAF_VISUAL_ENSEMBLE"].includes(field.source)
             ? "AI screening selesai · perlu dikonfirmasi pengguna"
             : "Perlu diisi atau dikonfirmasi pengguna";
@@ -305,6 +310,11 @@ function renderAnalystSummary(data) {
   }
   problemBox.innerHTML = `<div class="problem-analysis-heading"><strong>Orkestrasi analisis pertanian</strong><span>${problem.ready_algorithm_count}/${problem.algorithm_count} algoritma siap · confidence ${Math.round(problem.confidence * 100)}%</span></div><div class="problem-analysis-grid">${Object.entries(problem.components).map(([key, item]) => `<article class="problem-card"><div class="ml-field-heading"><strong>${problemLabels[key] || key}</strong><span class="status-chip ${String(item.status).toLowerCase()}">${statusLabels[item.status] || item.status}</span></div><strong>${item.algorithm}</strong><small>Confidence ${Math.round(item.confidence * 100)}% · ${item.source}</small><ul>${(item.evidence || []).map(reason => `<li>${reason}</li>`).join("")}</ul></article>`).join("")}</div>`;
 }
+form.addEventListener("submit", () => {
+  form.querySelectorAll("[data-ai-locked='true']").forEach((field) => {
+    field.disabled = false;
+  });
+});
 if (photoInput) photoInput.addEventListener("change", async () => {
   if (!photoInput.files.length) return;
   statusBox.innerHTML = "<strong>AI sedang menganalisis...</strong><span>Menjalankan seluruh algoritma pemeriksaan:</span>";

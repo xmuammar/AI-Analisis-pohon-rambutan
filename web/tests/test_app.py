@@ -223,6 +223,8 @@ def test_inspection_form_renders_database_sections(client, app):
     assert response.data.count(b"data-after-analysis hidden") == 6
     assert b"Perlu diisi atau dikonfirmasi pengguna" in response.data
     assert b"renderProcessingAlgorithms" in response.data
+    assert b"data-ai-locked" in response.data
+    assert b"tidak perlu input manual" in response.data
     assert b"YOLO11 Nano" in response.data
     assert b"DeepLabV3 Segmentation" in response.data
     assert b"problem-analysis" in response.data
