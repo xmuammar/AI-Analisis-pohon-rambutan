@@ -17,20 +17,20 @@ AiAnalisRambutan
 Repository GitHub:
 xmuammar/AI-analisis-rambutan-lapangan
 
-Folder aplikasi Android baru:
-/mobile
+Folder aplikasi web baru:
+/web
 
 Platform utama:
-Android
+Web
 
 Teknologi utama:
-Flutter + Dart
+Python + Flask
 
 Arsitektur:
-Local-first + Internet-enhanced + AI hybrid
+Web-first + Internet-enhanced + AI hybrid
 
 Database utama:
-SQLite + Drift
+SQLite + SQLAlchemy + Flask-Migrate
 
 Target awal:
 12 pohon Rambutan Belereng
@@ -55,36 +55,36 @@ RBT-012
 B. ATURAN PENTING REPOSITORY
 ================================================================================
 
-Repository ini SUDAH memiliki aplikasi web lama.
+Repository ini memiliki aplikasi web berbasis Python Flask.
 
 WAJIB:
 
-1. Jangan menghapus aplikasi web lama.
-2. Jangan merusak aplikasi web lama.
-3. Jangan memindahkan source aplikasi web lama.
-4. Jangan mengganti database aplikasi web lama.
+1. Jangan menghapus aplikasi web yang sudah ada.
+2. Jangan merusak aplikasi web yang sudah ada.
+3. Jangan memindahkan source aplikasi web yang sudah ada.
+4. Jangan mengganti database aplikasi web yang sudah ada.
 5. Jangan menghapus commit/history lama.
 6. Jangan melakukan force push.
 7. Jangan mengubah file existing kecuali memang diperlukan dan aman.
-8. Seluruh source Android baru wajib berada di:
+8. Seluruh source web baru wajib berada di:
 
-/mobile
+/web
 
 Struktur konseptual:
 
 AI-analisis-rambutan-lapangan/
-├── app/                 aplikasi web lama
+├── app/                 aplikasi web Flask
 ├── db/                  database web lama
 ├── public/              aset web lama
 ├── ...
-└── mobile/              aplikasi Android Flutter baru
+└── web/                aplikasi Python Flask
 
 Sebelum coding:
 
 - inspeksi repository
-- identifikasi batas aplikasi web lama
+- identifikasi batas aplikasi web yang sudah ada
 - catat file yang tidak boleh disentuh
-- pastikan /mobile aman digunakan
+- pastikan /web aman digunakan
 
 
 ================================================================================
@@ -94,8 +94,8 @@ C. PERAN CODEX
 Bertindaklah sebagai gabungan:
 
 - Lead Software Architect
-- Senior Flutter Engineer
-- Android Engineer
+- Senior Python Engineer
+- Senior Flask Web Engineer
 - Database Engineer
 - Machine Learning Engineer
 - Computer Vision Engineer
@@ -168,7 +168,7 @@ AiAnalisRambutan harus berkembang menjadi gabungan:
 - sistem backup
 - sistem developer engineering console
 
-Semuanya berada dalam satu aplikasi Android.
+Semuanya berada dalam satu aplikasi web Flask.
 
 
 ================================================================================
@@ -991,7 +991,8 @@ AN. DATABASE
 Gunakan:
 
 SQLite
-Drift
+SQLAlchemy
+Flask-Migrate
 
 Relational database.
 
@@ -2910,9 +2911,9 @@ EQ. STATE MANAGEMENT
 
 Prefer:
 
-Riverpod
+Flask application factory, blueprints, dan dependency injection sederhana.
 
-atau alternatif yang lebih baik jika ada alasan teknis kuat.
+Gunakan pola lain hanya jika ada alasan teknis kuat.
 
 
 ================================================================================
@@ -2921,7 +2922,7 @@ ER. ROUTING
 
 Prefer:
 
-go_router
+Flask routes dan blueprint terpisah.
 
 
 ================================================================================
@@ -2930,80 +2931,29 @@ ES. DATABASE ORM
 
 Gunakan:
 
-Drift
+SQLAlchemy dan Flask-Migrate.
 
 
 ================================================================================
 ET. PROJECT STRUCTURE
 ================================================================================
 
-mobile/
-├── lib/
-│   ├── main.dart
-│   ├── app/
-│   │   ├── app.dart
-│   │   ├── router.dart
-│   │   └── theme/
-│   ├── core/
-│   │   ├── constants/
-│   │   ├── errors/
-│   │   ├── logging/
-│   │   ├── security/
-│   │   ├── utils/
-│   │   └── services/
-│   ├── data/
-│   │   ├── database/
-│   │   ├── tables/
-│   │   ├── dao/
-│   │   ├── mappers/
-│   │   └── repositories/
-│   ├── domain/
-│   │   ├── entities/
-│   │   ├── repositories/
-│   │   └── usecases/
-│   ├── features/
-│   │   ├── dashboard/
-│   │   ├── trees/
-│   │   ├── inspection/
-│   │   ├── camera/
-│   │   ├── growth/
-│   │   ├── care/
-│   │   ├── soil/
-│   │   ├── flowering/
-│   │   ├── fruiting/
-│   │   ├── pests/
-│   │   ├── diseases/
-│   │   ├── analysis/
-│   │   ├── harvest/
-│   │   ├── reports/
-│   │   ├── history/
-│   │   ├── backup/
-│   │   ├── settings/
-│   │   └── developer/
-│   ├── ai/
-│   │   ├── providers/
-│   │   ├── router/
-│   │   ├── rules/
-│   │   ├── features/
-│   │   ├── ml/
-│   │   ├── vision/
-│   │   ├── soil/
-│   │   ├── anomaly/
-│   │   ├── timeseries/
-│   │   ├── ensemble/
-│   │   ├── confidence/
-│   │   └── xai/
-│   ├── storage/
-│   ├── backup/
-│   └── developer/
-├── assets/
-│   ├── models/
-│   ├── model_manifests/
-│   ├── images/
-│   └── icons/
-├── docs/
-├── test/
-├── integration_test/
+web/
+├── app/
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── main.py
+│   ├── trees.py
+│   ├── models.py
+│   ├── forms.py
+│   └── services/
+├── templates/
+├── static/
+├── migrations/
+├── tests/
+├── config.py
+├── run.py
+├── requirements.txt
 └── README.md
 
 
@@ -3013,23 +2963,21 @@ EU. DOCUMENTATION
 
 Create:
 
-mobile/README.md
+web/README.md
 
-mobile/docs/ARCHITECTURE.md
-mobile/docs/DATABASE.md
-mobile/docs/DATA_MODEL.md
-mobile/docs/PHOTO_FIRST_INSPECTION.md
-mobile/docs/AI_ENGINE.md
-mobile/docs/VIRTUAL_SOIL_SENSOR.md
-mobile/docs/VISION_PIPELINE.md
-mobile/docs/XAI.md
-mobile/docs/MODEL_MANAGEMENT.md
-mobile/docs/BACKUP_RESTORE.md
-mobile/docs/GOOGLE_DRIVE.md
-mobile/docs/DEVELOPER_CENTER.md
-mobile/docs/SECURITY.md
-mobile/docs/TESTING.md
-mobile/docs/ROADMAP.md
+web/docs/ARCHITECTURE.md
+web/docs/DATABASE.md
+web/docs/DATA_MODEL.md
+web/docs/PHOTO_FIRST_INSPECTION.md
+web/docs/AI_ENGINE.md
+web/docs/VIRTUAL_SOIL_SENSOR.md
+web/docs/VISION_PIPELINE.md
+web/docs/XAI.md
+web/docs/MODEL_MANAGEMENT.md
+web/docs/BACKUP_RESTORE.md
+web/docs/SECURITY.md
+web/docs/TESTING.md
+web/docs/ROADMAP.md
 
 
 ================================================================================
@@ -3255,13 +3203,13 @@ FH. QUALITY GATE
 
 Before commit:
 
-dart format .
+black .
 
-flutter analyze
+ruff check .
 
-flutter test
+pytest
 
-flutter build apk --debug
+flask --app run.py run
 
 jika environment mendukung.
 
@@ -3284,11 +3232,11 @@ rewrite history
 
 Gunakan branch:
 
-feature/ai-analis-rambutan-mobile
+feature/ai-analis-rambutan-web
 
 Suggested first commit:
 
-feat(mobile): initialize AiAnalisRambutan application
+feat(web): initialize AiAnalisRambutan Flask application
 
 
 ================================================================================
@@ -3387,14 +3335,14 @@ Sekarang kerjakan nyata.
 Langkah:
 
 1. Inspect repository.
-2. Identifikasi aplikasi web lama.
-3. Pastikan web tidak berubah.
-4. Buat /mobile.
-5. flutter create.
-6. Setup Material 3.
-7. Setup Riverpod.
-8. Setup go_router.
-9. Setup Drift.
+2. Identifikasi aplikasi web yang sudah ada.
+3. Pastikan source di luar /web tidak berubah tanpa alasan.
+4. Buat /web.
+5. Inisialisasi Flask application factory.
+6. Setup Jinja2 templates dan static assets.
+7. Setup Flask-SQLAlchemy.
+8. Setup Flask-Migrate.
+9. Setup konfigurasi environment.
 10. Buat database version 1.
 11. Buat migration framework.
 12. Seed 12 pohon.
@@ -3417,10 +3365,10 @@ Langkah:
 29. Buat Developer Center skeleton.
 30. Buat JSON backup dasar.
 31. Tambahkan tests.
-32. dart format.
-33. flutter analyze.
-34. flutter test.
-35. flutter build apk --debug jika memungkinkan.
+32. black .
+33. ruff check .
+34. pytest.
+35. flask --app run.py run jika memungkinkan.
 36. Fix semua error.
 37. Commit bila stabil.
 
@@ -4110,11 +4058,11 @@ HQ. DEVICE INFO
 
 Developer:
 
-Android version
-device model
-RAM
-storage
-GPU/NNAPI if available
+Operating system and browser version
+device/browser details
+server RAM
+server storage
+available compute backend
 
 
 ================================================================================
@@ -4636,13 +4584,13 @@ Features implemented
 
 Tests added
 
-dart format result
+black result
 
-flutter analyze result
+ruff result
 
-flutter test result
+pytest result
 
-APK build result
+Flask run/build result
 
 Known limitations
 
@@ -4665,13 +4613,13 @@ Pertama:
 2. Jelaskan struktur existing secara ringkas.
 3. Konfirmasi batas aplikasi web.
 4. Jangan ubah web.
-5. Buat /mobile.
+5. Buat /web.
 6. Implementasikan foundation.
 7. Jangan berhenti hanya membuat rencana.
 8. Tulis source code nyata.
 9. Jalankan analyzer.
 10. Jalankan tests.
-11. Build APK jika toolchain tersedia.
+11. Jalankan aplikasi Flask jika toolchain tersedia.
 12. Perbaiki error.
 13. Commit jika stabil.
 
@@ -4712,8 +4660,8 @@ JQ. JIKA TERBLOKIR
 
 Jika terblokir karena:
 
-Flutter SDK
-Android SDK
+Python
+Flask dependencies
 internet
 dependency
 permission

@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Pohon Saya · AI - Analis Rambutan{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">KEBUN RAMBUTAN BELERENG</p><h1>Pohon Saya</h1></div><span class="pill">{{ trees|length }} pohon aktif</span></div>
+<div class="tree-grid">{% for tree in trees %}<a class="tree-card" href="{{ url_for('trees.detail', tree_id=tree.id) }}"><div class="tree-avatar">🌳</div><div><h2>{{ tree.code }}</h2><p>{{ tree.variety }} · {{ tree.status|replace('_', ' ')|title }}</p></div><span>›</span></a>{% endfor %}</div>
+{% endblock %}

@@ -6,7 +6,7 @@ Aplikasi Android Flutter local-first untuk pemeriksaan dan catatan longitudinal 
 
 - Material 3, Riverpod, dan `go_router`.
 - SQLite melalui Drift dengan migrasi skema v1 dan seed `RBT-001` sampai `RBT-012`.
-- Dashboard, daftar/detail pohon, pemeriksaan terpandu, fallback manual, dan Developer Center skeleton.
+- Dashboard, daftar/detail pohon, kamera terpandu photo-first, penyimpanan foto privat dengan checksum, pemeriksaan kualitas teknis foto lokal, fallback manual, dan Developer Center skeleton.
 - Model computer vision belum disertakan. UI menyatakan keadaan tersebut secara eksplisit dan tidak membuat hasil analisis palsu.
 
 ## Menjalankan
