@@ -76,6 +76,13 @@ def test_about_page_lists_algorithm_groups(client):
     assert b"INSUFFICIENT_DATA" in response.data
 
 
+def test_developer_center_is_removed_from_user_interface(client):
+    response = client.get("/dashboard")
+    assert response.status_code == 200
+    assert b"Developer Center" not in response.data
+    assert client.get("/developer").status_code == 404
+
+
 def test_manual_inspection_persists_soil_inference(client, app):
     with app.app_context():
         tree = db.session.scalar(db.select(Tree).where(Tree.code == "RBT-001"))

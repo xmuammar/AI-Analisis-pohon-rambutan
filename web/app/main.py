@@ -19,7 +19,6 @@ from werkzeug.utils import secure_filename
 from app import db
 from app.ai.backup import build_backup
 from app.ai.catalog import get_algorithm_catalog
-from app.ai.diagnostics import system_snapshot
 from app.ai.engine import analyze_inspection
 from app.ai.problem_solver import solve_visual_problems
 from app.ai.training import build_training_samples, train_visual_model
@@ -595,47 +594,6 @@ def dashboard():
     )
 
 
-@bp.get("/developer")
-@login_required
-def developer():
-    tables = [
-        "garden",
-        "tree",
-        "observation_session",
-        "soil_observation",
-        "photo",
-        "field_prediction",
-        "user_correction",
-        "growth_measurement",
-        "watering_event",
-        "fertilizer_event",
-        "pruning_event",
-        "flowering_observation",
-        "fruit_observation",
-        "pest_observation",
-        "disease_observation",
-        "weed_observation",
-        "weather_observation",
-        "harvest",
-        "sensor_device",
-        "sensor_reading",
-        "model_metadata",
-        "system_log",
-    ]
-    snapshot = system_snapshot(str(current_app.config["MODEL_FOLDER"]))
-    return render_template(
-        "developer.html", tables=tables, schema_version=1, snapshot=snapshot
-    )
-
-
-@bp.get("/developer/diagnostics.json")
-@login_required
-def developer_diagnostics():
-    return jsonify(system_snapshot(str(current_app.config["MODEL_FOLDER"])))
-
-
-@bp.post("/developer/train")
-@login_required
 def train_models():
     predictions = db.session.scalars(
         db.select(FieldPrediction).where(
