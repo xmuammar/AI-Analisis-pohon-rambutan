@@ -82,3 +82,37 @@ def test_aggregation_maps_supported_fields_and_blocks_unsupported_diagnosis():
     )
     assert result["fields"]["pest_or_disease"]["status"] == "NEEDS_CONFIRMATION"
     assert result["fields"]["pest_or_disease"]["source"] == "VISUAL_ANOMALY_SCREENING"
+
+
+def test_flower_fruit_ensemble_autofills_supported_fields():
+    result = aggregate_inspection_fields(
+        {
+            "visual_features": {
+                "status": "READY",
+                "color_class": "DOMINAN_COKELAT_MERAH",
+                "red_mean": 150,
+                "green_mean": 100,
+                "brightness_mean": 130,
+                "sharpness_proxy": 10,
+                "confidence": 0.65,
+            },
+            "object_detection": {
+                "status": "READY",
+                "model": "yolo11n",
+                "detections": [
+                    {"label": "flower", "confidence": 0.8},
+                    {"label": "fruit", "confidence": 0.85},
+                    {"label": "fruit", "confidence": 0.75},
+                ],
+            },
+            "segmentation": {"status": "READY", "class_distribution": {}},
+        }
+    )
+    fields = result["fields"]
+    assert fields["flower_present"]["value"] is True
+    assert fields["flower_stage"]["value"] == "FLOWERING"
+    assert fields["fruit_present"]["value"] is True
+    assert fields["fruit_stage"]["value"] == "RIPE"
+    assert fields["fruit_count_estimate"]["value"] == 2
+    assert fields["fruit_damage_percent"]["value"] == 0
+    assert fields["fruit_stage"]["status"] == "ESTIMATED"

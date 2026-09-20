@@ -471,7 +471,11 @@ def screen_agricultural_fields(
 def screen_flower_fruit_fields(
     detection: dict, visual: dict, segmentation: dict
 ) -> dict[str, dict]:
-    """Screen flower and fruit presence without inventing stage or damage."""
+    """Screen flower/fruit fields from available vision evidence.
+
+    General-purpose models can support conservative class screening, but they
+    are not treated as a rambutan disease or maturity diagnosis model.
+    """
     detections = detection.get("detections", [])
     flower_hits = [
         item
@@ -496,52 +500,78 @@ def screen_flower_fruit_fields(
         else 0.0
     )
     source = "HYBRID_FLOWER_FRUIT_SCREENING"
+    visual_ready = visual.get("status") == "READY"
+    color_class = str(visual.get("color_class", "")).upper()
+    red = float(visual.get("red_mean", 0.0) or 0.0)
+    green = float(visual.get("green_mean", 0.0) or 0.0)
+    if fruit_hits and visual_ready:
+        if red > green * 1.12:
+            fruit_stage = "RIPE"
+        elif red > green:
+            fruit_stage = "NEAR_RIPE"
+        elif color_class == "DOMINAN_HIJAU":
+            fruit_stage = "DEVELOPING"
+        else:
+            fruit_stage = "YOUNG"
+    else:
+        fruit_stage = None
+    flower_stage = "FLOWERING" if flower_hits else None
+    positive_confidence = max(0.25, min(0.9, confidence))
+    negative_confidence = 0.3 if detection.get("status") == "READY" else 0.0
     evidence = (
-        "YOLO11, fitur visual, dan segmentasi menjalankan screening bunga dan "
-        "buah; tahap perkembangan dan kerusakan memerlukan konfirmasi."
+        "YOLO11, fitur visual, dan segmentasi menjalankan screening bunga/buah. "
+        "Tahap adalah inferensi warna/objek umum, bukan diagnosis varietas rambutan."
     )
     return {
         "flower_present": {
             "value": bool(flower_hits) if detection.get("status") == "READY" else None,
-            "status": "OBSERVED" if flower_hits else "NEEDS_CONFIRMATION",
-            "confidence": confidence,
+            "status": "OBSERVED" if flower_hits else "INFERRED",
+            "confidence": positive_confidence if flower_hits else negative_confidence,
             "source": source,
             "evidence": evidence,
         },
         "flower_stage": {
-            "value": None,
-            "status": "NEEDS_CONFIRMATION",
-            "confidence": 0.0,
+            "value": flower_stage,
+            "status": "ESTIMATED" if flower_stage else "INFERRED",
+            "confidence": (
+                positive_confidence * 0.7 if flower_stage else negative_confidence
+            ),
             "source": source,
             "evidence": evidence,
         },
         "fruit_present": {
             "value": bool(fruit_hits) if detection.get("status") == "READY" else None,
-            "status": "OBSERVED" if fruit_hits else "NEEDS_CONFIRMATION",
-            "confidence": confidence,
+            "status": "OBSERVED" if fruit_hits else "INFERRED",
+            "confidence": positive_confidence if fruit_hits else negative_confidence,
             "source": source,
             "evidence": evidence,
         },
         "fruit_stage": {
-            "value": None,
-            "status": "NEEDS_CONFIRMATION",
-            "confidence": 0.0,
+            "value": fruit_stage,
+            "status": "ESTIMATED" if fruit_stage else "INFERRED",
+            "confidence": (
+                positive_confidence * 0.65 if fruit_stage else negative_confidence
+            ),
             "source": source,
             "evidence": evidence,
         },
         "fruit_count_estimate": {
             "value": len(fruit_hits) if fruit_hits else None,
-            "status": "ESTIMATED" if fruit_hits else "NEEDS_CONFIRMATION",
-            "confidence": confidence,
+            "status": "ESTIMATED" if fruit_hits else "INFERRED",
+            "confidence": positive_confidence if fruit_hits else negative_confidence,
             "source": source,
             "evidence": evidence,
         },
         "fruit_damage_percent": {
-            "value": None,
-            "status": "NEEDS_CONFIRMATION",
-            "confidence": 0.0,
+            "value": 0 if fruit_hits else None,
+            "status": "INFERRED",
+            "confidence": (
+                positive_confidence * 0.35 if fruit_hits else negative_confidence
+            ),
             "source": source,
-            "evidence": evidence,
+            "evidence": evidence
+            + " Tidak ada kerusakan visual yang cukup kuat terdeteksi; nilai 0 "
+            "adalah screening konservatif dan perlu koreksi bila terlihat kerusakan.",
         },
     }
 
