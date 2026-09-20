@@ -211,12 +211,12 @@ def test_inspection_form_renders_database_sections(client, app):
         tree = db.session.scalar(db.select(Tree).where(Tree.code == "RBT-001"))
     response = client.get(f"/trees/{tree.id}/inspection")
     assert response.status_code == 200
-    assert b"Field database: tanah dan daun" in response.data
-    assert b"Field database: pertumbuhan" in response.data
-    assert b"Field database: bunga dan buah" in response.data
+    assert b"Tanah dan daun" in response.data
+    assert b"Ukuran dan perkembangan pohon" in response.data
+    assert b"Bunga dan buah" in response.data
     assert b'name="height_cm"' in response.data
     assert b'name="fruit_stage"' in response.data
-    assert b"Hasil analisis pembelajaran mesin" in response.data
+    assert b"Ringkasan analisis lapangan" in response.data
     assert b"Keyakinan gabungan" in response.data
     assert b"Masukkan konfirmasi analis" in response.data
     assert b"const formFieldKeys = new Set" in response.data
@@ -231,10 +231,8 @@ def test_inspection_form_renders_database_sections(client, app):
     assert b"SHAP / LIME / Grad-CAM / Heatmap" in response.data
     assert b"Virtual Soil Sensor" in response.data
     html = response.data.decode()
-    assert html.index("1. Hasil analisis pembelajaran mesin") < html.index(
-        "2. Field database: tanah dan daun"
-    )
-    assert b"Mode pemeriksaan:</strong> Foto-first" in response.data
+    assert html.index("Ringkasan analisis lapangan") < html.index("Tanah dan daun")
+    assert b"Metode:</strong> Pemeriksaan berbasis foto" in response.data
     assert b">Hybrid<" not in response.data
     assert b">Manual<" not in response.data
 

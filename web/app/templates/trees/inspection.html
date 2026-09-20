@@ -2,33 +2,39 @@
 {% block title %}Pemeriksaan {{ tree.code }} · AI - Analis Rambutan{% endblock %}
 {% block content %}
 <div class="inspection-layout">
-<a class="back" href="{{ url_for('trees.detail', tree_id=tree.id) }}">← {{ tree.code }}</a>
-<p class="eyebrow">FORM DATABASE + PEMBELAJARAN MESIN</p>
-<h1>Pemeriksaan {{ tree.code }}</h1>
-<p class="muted">Foto diproses lebih dulu. Nilai yang tersedia dari AI mengisi form, sedangkan nilai tanpa model khusus harus dikonfirmasi oleh analis.</p>
+<a class="back" href="{{ url_for('trees.detail', tree_id=tree.id) }}">← Kembali ke profil pohon</a>
+<div class="inspection-heading">
+  <div>
+    <p class="eyebrow">CATATAN INSPEKSI LAPANGAN</p>
+    <h1>Pemeriksaan {{ tree.code }}</h1>
+    <p class="muted">Lengkapi dokumentasi kondisi pohon hari ini. Ambil foto yang mewakili kondisi umum pohon; hasil analisis akan menjadi bahan penilaian awal.</p>
+  </div>
+  <div class="inspection-identity"><span>KODE POHON</span><strong>{{ tree.code }}</strong><small>Rambutan Belerang · Inspeksi foto</small></div>
+</div>
 <form method="post" enctype="multipart/form-data" class="card form-card" id="inspection-form" data-analyze-url="{{ url_for('main.analyze_inspection_photo', tree_id=tree.id) }}">
   {{ form.hidden_tag() }}
   <section class="form-section">
-    <h2>Sumber pemeriksaan</h2>
-    <p><strong>Mode pemeriksaan:</strong> Foto-first</p>
+    <div class="section-title"><span class="section-number">01</span><div><p class="section-kicker">DOKUMENTASI</p><h2>Ambil foto kondisi pohon</h2></div></div>
+    <p class="section-intro">Gunakan foto yang jelas dan mewakili. Ambil beberapa sudut bila diperlukan: pohon penuh, daun, batang, tanah, bunga, atau buah.</p>
+    <p><strong>Metode:</strong> Pemeriksaan berbasis foto</p>
     {{ form.mode() }}
     {{ form.photos.label }}{{ form.photos(class="input", accept="image/*", capture="environment", multiple=true) }}
-    <small class="muted">Kamera belakang atau upload JPG, PNG, WebP. Semua model lokal dijalankan otomatis.</small>
-    <div id="ai-status" class="analysis-panel" aria-live="polite"><strong>Menunggu foto.</strong><span>Pilih gambar untuk memulai analisis otomatis.</span></div>
+    <small class="muted">Kamera belakang atau pilih foto JPG, PNG, WebP. Sistem akan memeriksa kualitas foto sebelum menilai kondisi lapangan.</small>
+    <div id="ai-status" class="analysis-panel" aria-live="polite"><strong>Foto belum dipilih.</strong><span>Pilih foto untuk memulai pemeriksaan.</span></div>
   </section>
   <section class="form-section">
-    <h2>1. Hasil analisis pembelajaran mesin</h2>
+    <div class="section-title"><span class="section-number">02</span><div><p class="section-kicker">PENILAIAN KONDISI</p><h2>Ringkasan analisis lapangan</h2><small class="muted">Hasil analisis pembelajaran mesin digunakan sebagai bahan pendukung pemeriksaan, bukan pengganti pertimbangan analis.</small></div></div>
     <div id="analyst-summary" class="analyst-summary">
       <div><span>Status analisis</span><strong id="analysis-priority">Menunggu foto</strong></div>
       <div><span>Keyakinan gabungan</span><strong id="analysis-confidence">0%</strong></div>
       <div><span>Data perlu konfirmasi</span><strong id="analysis-uncertain">0 data</strong></div>
     </div>
-    <div id="ml-fields" class="ml-field-grid"><p class="muted">Belum ada hasil AI.</p></div>
+    <div id="ml-fields" class="ml-field-grid"><p class="empty-inspection">Belum ada foto yang dianalisis.</p></div>
     <div id="model-run-list" class="model-run-list"></div>
-    <div id="problem-analysis" class="problem-analysis"><p class="muted">Orkestrasi analisis pertanian menunggu foto.</p></div>
+    <div id="problem-analysis" class="problem-analysis"><p class="empty-inspection">Penilaian per area kebun akan tampil setelah foto diproses.</p></div>
   </section>
   <section class="form-section" data-after-analysis hidden>
-    <h2>2. Field database: tanah dan daun</h2>
+    <div class="section-title"><span class="section-number">03</span><div><p class="section-kicker">PENGAMATAN VEGETATIF</p><h2>Tanah dan daun</h2></div></div>
     <div class="form-grid">
       <label class="check">{{ form.surface_dark() }} {{ form.surface_dark.label.text }}</label>
       <label class="check">{{ form.standing_water() }} {{ form.standing_water.label.text }}</label>
@@ -37,7 +43,7 @@
     </div>
   </section>
   <section class="form-section" data-after-analysis hidden>
-    <h2>3. Field database: pertumbuhan</h2>
+    <div class="section-title"><span class="section-number">04</span><div><p class="section-kicker">PERTUMBUHAN</p><h2>Ukuran dan perkembangan pohon</h2></div></div>
     <div class="form-grid three">
       <div>{{ form.height_cm.label }}{{ form.height_cm(class="input") }}</div>
       <div>{{ form.stem_diameter_cm.label }}{{ form.stem_diameter_cm(class="input") }}</div>
@@ -45,7 +51,7 @@
     </div>
   </section>
   <section class="form-section" data-after-analysis hidden>
-    <h2>4. Field database: bunga dan buah</h2>
+    <div class="section-title"><span class="section-number">05</span><div><p class="section-kicker">FASE PRODUKTIF</p><h2>Bunga dan buah</h2></div></div>
     <div class="form-grid">
       <label class="check">{{ form.flower_present() }} {{ form.flower_present.label.text }}</label>
       <div>{{ form.flower_stage.label }}{{ form.flower_stage(class="input") }}</div>
@@ -56,7 +62,7 @@
     </div>
   </section>
   <section class="form-section" data-after-analysis hidden>
-    <h2>5. Field database: hama, penyakit, dan gulma</h2>
+    <div class="section-title"><span class="section-number">06</span><div><p class="section-kicker">PERLINDUNGAN TANAMAN</p><h2>Hama, penyakit, dan gulma</h2></div></div>
     <div class="form-grid">
       <label class="check">{{ form.pest_present() }} {{ form.pest_present.label.text }}</label>
       <div>{{ form.pest_type.label }}{{ form.pest_type(class="input") }}</div>
@@ -67,10 +73,10 @@
     </div>
   </section>
   <section class="form-section" data-after-analysis hidden>
-    <h2>6. Catatan</h2>
+    <div class="section-title"><span class="section-number">07</span><div><p class="section-kicker">CATATAN LAPANGAN</p><h2>Catatan dan keputusan pemeriksa</h2></div></div>
     {{ form.notes.label }}{{ form.notes(class="input", rows=4, placeholder="Catatan pemeriksa.") }}
   </section>
-  <div data-after-analysis hidden>{{ form.submit(class="button primary") }}</div>
+  <div class="inspection-submit" data-after-analysis hidden><p class="muted">Pastikan hasil AI dan catatan lapangan sudah sesuai sebelum disimpan.</p>{{ form.submit(class="button primary", value="Simpan hasil pemeriksaan") }}</div>
 </form>
 </div>
 <script>
