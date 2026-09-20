@@ -40,6 +40,12 @@
       <label class="check">{{ form.standing_water() }} {{ form.standing_water.label.text }}</label>
       <label class="check">{{ form.leaf_wilt() }} {{ form.leaf_wilt.label.text }}</label>
       <div>{{ form.soil_moisture_visual.label }}{{ form.soil_moisture_visual(class="input") }}</div>
+      <div>{{ form.soil_surface_condition.label }}{{ form.soil_surface_condition(class="input") }}</div>
+      <div>{{ form.soil_compaction.label }}{{ form.soil_compaction(class="input") }}</div>
+      <div>{{ form.soil_drainage.label }}{{ form.soil_drainage(class="input") }}</div>
+      <div>{{ form.standing_water_depth_cm.label }}{{ form.standing_water_depth_cm(class="input") }}</div>
+      <label class="check">{{ form.visible_cracks() }} {{ form.visible_cracks.label.text }}</label>
+      <label class="check">{{ form.mulch_present() }} {{ form.mulch_present.label.text }}</label>
     </div>
   </section>
   <section class="form-section" data-after-analysis hidden>
@@ -48,6 +54,10 @@
       <div>{{ form.height_cm.label }}{{ form.height_cm(class="input") }}</div>
       <div>{{ form.stem_diameter_cm.label }}{{ form.stem_diameter_cm(class="input") }}</div>
       <div>{{ form.canopy_width_cm.label }}{{ form.canopy_width_cm(class="input") }}</div>
+      <div>{{ form.canopy_height_cm.label }}{{ form.canopy_height_cm(class="input") }}</div>
+      <div>{{ form.canopy_ns_cm.label }}{{ form.canopy_ns_cm(class="input") }}</div>
+      <div>{{ form.canopy_ew_cm.label }}{{ form.canopy_ew_cm(class="input") }}</div>
+      <div>{{ form.primary_branch_count.label }}{{ form.primary_branch_count(class="input") }}</div>
     </div>
   </section>
   <section class="form-section" data-after-analysis hidden>
@@ -59,6 +69,10 @@
       <div>{{ form.fruit_stage.label }}{{ form.fruit_stage(class="input") }}</div>
       <div>{{ form.fruit_count_estimate.label }}{{ form.fruit_count_estimate(class="input") }}</div>
       <div>{{ form.fruit_damage_percent.label }}{{ form.fruit_damage_percent(class="input") }}</div>
+      <div>{{ form.fruit_drop_count.label }}{{ form.fruit_drop_count(class="input") }}</div>
+      <div>{{ form.fruit_drop_level.label }}{{ form.fruit_drop_level(class="input") }}</div>
+      <div>{{ form.fruit_color.label }}{{ form.fruit_color(class="input") }}</div>
+      <div>{{ form.ripeness.label }}{{ form.ripeness(class="input") }}</div>
     </div>
   </section>
   <section class="form-section" data-after-analysis hidden>
@@ -68,8 +82,16 @@
       <div>{{ form.pest_type.label }}{{ form.pest_type(class="input") }}</div>
       <label class="check">{{ form.disease_present() }} {{ form.disease_present.label.text }}</label>
       <div>{{ form.disease_type.label }}{{ form.disease_type(class="input") }}</div>
+      <div>{{ form.pest_affected_part.label }}{{ form.pest_affected_part(class="input") }}</div>
+      <div>{{ form.pest_spread.label }}{{ form.pest_spread(class="input") }}</div>
+      <div>{{ form.disease_affected_part.label }}{{ form.disease_affected_part(class="input") }}</div>
+      <div>{{ form.disease_spread.label }}{{ form.disease_spread(class="input") }}</div>
       <div>{{ form.weed_level.label }}{{ form.weed_level(class="input") }}</div>
       <div>{{ form.weed_coverage_percent.label }}{{ form.weed_coverage_percent(class="input") }}</div>
+      <div>{{ form.weed_density.label }}{{ form.weed_density(class="input") }}</div>
+      <div>{{ form.weed_height_cm.label }}{{ form.weed_height_cm(class="input") }}</div>
+      <label class="check">{{ form.weed_removed() }} {{ form.weed_removed.label.text }}</label>
+      <div>{{ form.weed_removal_method.label }}{{ form.weed_removal_method(class="input") }}</div>
     </div>
   </section>
   <section class="form-section" data-after-analysis hidden>
@@ -208,11 +230,17 @@ function renderFields(fields) {
   const fieldMap = {root_zone_moisture_class: "soil_moisture_visual"};
   const formFieldKeys = new Set([
     "surface_dark", "standing_water", "leaf_wilt", "soil_moisture_visual",
+    "soil_surface_condition", "soil_compaction", "soil_drainage",
+    "standing_water_depth_cm", "visible_cracks", "mulch_present",
     "root_zone_moisture_class", "height_cm", "stem_diameter_cm",
-    "canopy_width_cm", "flower_present", "flower_stage", "fruit_present",
+    "canopy_width_cm", "canopy_height_cm", "canopy_ns_cm", "canopy_ew_cm",
+    "primary_branch_count", "flower_present", "flower_stage", "fruit_present",
     "fruit_stage", "fruit_count_estimate", "fruit_damage_percent",
-    "pest_present", "pest_type", "disease_present", "disease_type",
-    "weed_level", "weed_coverage_percent", "notes"
+    "fruit_drop_count", "fruit_drop_level", "fruit_color", "ripeness",
+    "pest_present", "pest_type", "pest_affected_part", "pest_spread",
+    "disease_present", "disease_type", "disease_affected_part", "disease_spread",
+    "weed_level", "weed_coverage_percent", "weed_density", "weed_height_cm",
+    "weed_removed", "weed_removal_method", "notes"
   ]);
   for (const [key, field] of Object.entries(fields)) {
     const target = document.querySelector(`[name="${fieldMap[key] || key}"]`);

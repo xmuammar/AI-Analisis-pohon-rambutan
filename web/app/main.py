@@ -777,12 +777,22 @@ def create_inspection(tree, form):
         standing_water=form.standing_water.data,
         leaf_wilt=form.leaf_wilt.data,
         soil_moisture_visual=form.soil_moisture_visual.data or None,
+        soil_surface_condition=form.soil_surface_condition.data or None,
+        soil_compaction=form.soil_compaction.data or None,
+        soil_drainage=form.soil_drainage.data or None,
+        standing_water_depth_cm=form.standing_water_depth_cm.data,
+        visible_cracks=form.visible_cracks.data,
+        mulch_present=form.mulch_present.data,
     )
     growth = GrowthMeasurement(
         tree_id=tree.id,
         height_cm=form.height_cm.data,
         stem_diameter_cm=form.stem_diameter_cm.data,
         canopy_width_cm=form.canopy_width_cm.data,
+        canopy_height_cm=form.canopy_height_cm.data,
+        canopy_ns_cm=form.canopy_ns_cm.data,
+        canopy_ew_cm=form.canopy_ew_cm.data,
+        primary_branch_count=form.primary_branch_count.data,
         measurement_method="USER_CONFIRMED",
     )
     flowering = FloweringObservation(
@@ -796,21 +806,33 @@ def create_inspection(tree, form):
         stage=form.fruit_stage.data or None,
         count_estimate=form.fruit_count_estimate.data,
         damage_percent=form.fruit_damage_percent.data,
+        fruit_drop_count=form.fruit_drop_count.data,
+        fruit_drop_level=form.fruit_drop_level.data or None,
+        fruit_color=form.fruit_color.data or None,
+        ripeness=form.ripeness.data or None,
     )
     pest = PestObservation(
         tree_id=tree.id,
         present=form.pest_present.data,
         category=form.pest_type.data or None,
+        affected_part=form.pest_affected_part.data or None,
+        spread=form.pest_spread.data or None,
     )
     disease = DiseaseObservation(
         tree_id=tree.id,
         present=form.disease_present.data,
         category=form.disease_type.data or None,
+        affected_part=form.disease_affected_part.data or None,
+        spread=form.disease_spread.data or None,
     )
     weed = WeedObservation(
         tree_id=tree.id,
         level=form.weed_level.data or None,
         coverage_percent=form.weed_coverage_percent.data,
+        density=form.weed_density.data or None,
+        height_cm=form.weed_height_cm.data,
+        removed=form.weed_removed.data,
+        removal_method=form.weed_removal_method.data or None,
     )
     inputs = InspectionInputs(
         surface_dark=soil.surface_dark,

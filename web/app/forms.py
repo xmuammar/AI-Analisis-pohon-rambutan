@@ -51,9 +51,41 @@ class InspectionForm(FlaskForm):
         ],
         validators=[Optional()],
     )
+    soil_surface_condition = StringField(
+        "Kondisi permukaan tanah", validators=[Optional(), Length(max=80)]
+    )
+    soil_compaction = SelectField(
+        "Pemadatan tanah",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("LOW", "Rendah"),
+            ("MEDIUM", "Sedang"),
+            ("HIGH", "Tinggi"),
+        ],
+        validators=[Optional()],
+    )
+    soil_drainage = SelectField(
+        "Drainase zona akar",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("GOOD", "Baik"),
+            ("MODERATE", "Sedang"),
+            ("POOR", "Buruk"),
+        ],
+        validators=[Optional()],
+    )
+    standing_water_depth_cm = FloatField(
+        "Kedalaman genangan (cm)", validators=[Optional()]
+    )
+    visible_cracks = BooleanField("Retakan permukaan terlihat")
+    mulch_present = BooleanField("Mulsa tersedia")
     height_cm = FloatField("Tinggi pohon (cm)", validators=[Optional()])
     stem_diameter_cm = FloatField("Diameter batang (cm)", validators=[Optional()])
     canopy_width_cm = FloatField("Lebar tajuk (cm)", validators=[Optional()])
+    canopy_height_cm = FloatField("Tinggi tajuk (cm)", validators=[Optional()])
+    canopy_ns_cm = FloatField("Lebar tajuk utara–selatan (cm)", validators=[Optional()])
+    canopy_ew_cm = FloatField("Lebar tajuk timur–barat (cm)", validators=[Optional()])
+    primary_branch_count = IntegerField("Jumlah cabang primer", validators=[Optional()])
     flower_present = BooleanField("Bunga terlihat")
     flower_stage = SelectField(
         "Tahap bunga",
@@ -84,11 +116,62 @@ class InspectionForm(FlaskForm):
         "Perkiraan jumlah buah", validators=[Optional()]
     )
     fruit_damage_percent = FloatField("Kerusakan buah (%)", validators=[Optional()])
+    fruit_drop_count = IntegerField("Jumlah buah rontok", validators=[Optional()])
+    fruit_drop_level = SelectField(
+        "Tingkat kerontokan buah",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("NONE", "Tidak ada"),
+            ("LOW", "Rendah"),
+            ("MEDIUM", "Sedang"),
+            ("HIGH", "Tinggi"),
+        ],
+        validators=[Optional()],
+    )
+    fruit_color = StringField(
+        "Warna buah dominan", validators=[Optional(), Length(max=40)]
+    )
+    ripeness = SelectField(
+        "Kematangan buah",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("UNRIPE", "Belum matang"),
+            ("NEAR_RIPE", "Hampir matang"),
+            ("RIPE", "Matang"),
+        ],
+        validators=[Optional()],
+    )
     pest_present = BooleanField("Hama terlihat")
     pest_type = StringField("Kategori hama", validators=[Optional(), Length(max=80)])
+    pest_affected_part = StringField(
+        "Bagian tanaman terdampak hama", validators=[Optional(), Length(max=80)]
+    )
+    pest_spread = SelectField(
+        "Penyebaran hama",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("LOCAL", "Lokal"),
+            ("SCATTERED", "Terpencar"),
+            ("WIDESPREAD", "Menyebar"),
+        ],
+        validators=[Optional()],
+    )
     disease_present = BooleanField("Gejala penyakit terlihat")
     disease_type = StringField(
         "Kategori penyakit", validators=[Optional(), Length(max=80)]
+    )
+    disease_affected_part = StringField(
+        "Bagian tanaman terdampak penyakit", validators=[Optional(), Length(max=80)]
+    )
+    disease_spread = SelectField(
+        "Penyebaran penyakit",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("LOCAL", "Lokal"),
+            ("SCATTERED", "Terpencar"),
+            ("WIDESPREAD", "Menyebar"),
+        ],
+        validators=[Optional()],
     )
     weed_level = SelectField(
         "Tingkat gulma",
@@ -102,6 +185,21 @@ class InspectionForm(FlaskForm):
         validators=[Optional()],
     )
     weed_coverage_percent = FloatField("Tutupan gulma (%)", validators=[Optional()])
+    weed_density = SelectField(
+        "Kepadatan gulma",
+        choices=[
+            ("", "Belum ditentukan"),
+            ("LOW", "Rendah"),
+            ("MEDIUM", "Sedang"),
+            ("HIGH", "Tinggi"),
+        ],
+        validators=[Optional()],
+    )
+    weed_height_cm = FloatField("Tinggi gulma (cm)", validators=[Optional()])
+    weed_removed = BooleanField("Gulma sudah dikendalikan")
+    weed_removal_method = StringField(
+        "Metode pengendalian gulma", validators=[Optional(), Length(max=80)]
+    )
     notes = TextAreaField(
         "Catatan pemeriksa", validators=[Optional(), Length(max=5000)]
     )
